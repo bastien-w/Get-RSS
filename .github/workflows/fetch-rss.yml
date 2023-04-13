@@ -1,0 +1,25 @@
+name: Run PowerShell script
+on:
+  schedule:
+    - cron: '0 8 * * *'
+jobs:
+  run-script:
+    runs-on: windows-latest
+    steps:
+    - name: Check out repository code
+      uses: actions/checkout@v2
+    - name: Run PowerShell script
+      env:
+        ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
+      run: |
+        .\myscript.ps1
+        $repo = "my-org/my-repo"
+        $token = "${{ env.ACCESS_TOKEN }}"
+        $headers = @{
+            Authorization = "token $token"
+        }
+        $body = @{
+            title = "Issue title"
+            body = "Issue body"
+        } | ConvertTo-Json
+        Invoke-RestMethod -Method Post -Headers $headers -Body $body -ContentType "application/json" -Uri "https://api.github.com/repos/$repo/issues"
