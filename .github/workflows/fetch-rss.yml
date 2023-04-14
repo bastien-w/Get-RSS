@@ -16,9 +16,9 @@ jobs:
         $headers = @{
             Authorization = "token $token"
         }
-        $IssueTitle = get-date
+        $IssueTitle = get-date -Format "dd/MM/yyyy - HH:mm:ss"
         $body = @{
             title = $IssueTitle
-            body = $htmlTable
+            body = $html
         } | ConvertTo-Json
         Invoke-RestMethod -Method Post -Headers $headers -Body $body -ContentType "application/json" -Uri "https://api.github.com/repos/$repo/issues"
