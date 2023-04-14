@@ -1,11 +1,13 @@
 name: Run PowerShell script
-on: push
+on:
+  schedule:
+    - cron: '10 8 * * *'
 jobs:
   run-script:
     runs-on: windows-latest
     steps:
     - name: Check out repository code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
     - name: Run PowerShell script
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
