@@ -1,17 +1,18 @@
-﻿# Déclaration des paramètres du script
-param(
+﻿param(
     [string]$Url
 )
+# Fetch RSS from URL
 
-# Récupération du flux RSS à partir de l'URL spécifiée
 $feed = Invoke-RestMethod -Uri $Url
 
-
-# Création d'un tableau de résultats contenant le titre, le lien et la date de chaque élément
+# Create a table with the wanted information
 $results = foreach ($item in $feed) {
     $title = $item.title
     $link = $item.link
-    $date = [DateTime]::Parse($item.pubDate)
+    $pattern = "\b[A-Z][a-z]{2},\s\d{1,2}\s[A-Z][a-z]{2}\s\d{4}\s\d{2}:\d{2}:\d{2}\b"
+    $match = $item.pubDate| Select-String -Pattern $pattern
+    $date = $match.Matches.Value
+    $date = [DateTime]::Parse($date)
 
     New-Object -TypeName PSObject -Property @{
         Title = $title
@@ -20,5 +21,5 @@ $results = foreach ($item in $feed) {
     }
 }
 
-# Affichage des résultats dans un tableau
+# return the result
 return $results

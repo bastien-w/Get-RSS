@@ -1,7 +1,5 @@
 name: Run PowerShell script
-on:
-  schedule:
-    - cron: '0 8 * * *'
+on: push
 jobs:
   run-script:
     runs-on: windows-latest
@@ -12,14 +10,15 @@ jobs:
       env:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
-        .\myscript.ps1
-        $repo = "my-org/my-repo"
+        .\main.ps1
+        $repo = "bastien-w/Get-RSS"
         $token = "${{ env.ACCESS_TOKEN }}"
         $headers = @{
             Authorization = "token $token"
         }
+        $IssueTitle = get-date
         $body = @{
-            title = "Issue title"
-            body = "Issue body"
+            title = $IssueTitle
+            body = $htmlTable
         } | ConvertTo-Json
         Invoke-RestMethod -Method Post -Headers $headers -Body $body -ContentType "application/json" -Uri "https://api.github.com/repos/$repo/issues"
