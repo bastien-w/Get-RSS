@@ -1,9 +1,8 @@
 name: Run PowerShell script
 on:
   schedule:
-    - cron: '0 6 * * *'
-    
-    workflow_dispatch:
+    - cron: '0 6 * * *'  
+  workflow_dispatch:
 jobs:
   run-script:
     runs-on: windows-latest
