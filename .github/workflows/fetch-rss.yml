@@ -28,7 +28,7 @@ jobs:
             $html += "<h1>$($item.Name)</h1>"
             $html += $articles | 
             Where-Object {$_.date -ge $yesterday8AM -and $_.date -lt $today8AM} | 
-            Select-Object Date,Title,$linkProperty | 
+            Select-Object Date,$linkProperty | 
             ConvertTo-Html -Head ''
             $html = $html -replace '&lt;', '<' -replace '&gt;', '>'
         }
