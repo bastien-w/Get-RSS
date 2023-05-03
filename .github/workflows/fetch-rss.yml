@@ -14,7 +14,9 @@ jobs:
         ACCESS_TOKEN: ${{ secrets.ACCESS_TOKEN }}
       run: |
         $csv = Import-Csv -Delimiter ';' -Path .\feed.csv
-
+        $Repo = "bastien-w/Get-RSS"
+        $Token = "${{ env.ACCESS_TOKEN }}"
+        $IssueTitle = get-date -Format "dd/MM/yyyy - HH:mm:ss"
         $yesterday8AM = (Get-Date).AddDays(-1).Date.AddHours(8)
         $today8AM = (Get-Date).Date.AddHours(8)
 
@@ -32,14 +34,6 @@ jobs:
             ConvertTo-Html -Head ''
             $html = $html -replace '&lt;', '<' -replace '&gt;', '>'
         }
-        $repo = "bastien-w/Get-RSS"
-        $token = "${{ env.ACCESS_TOKEN }}"
-        $headers = @{
-            Authorization = "token $token"
-        }
-        $IssueTitle = get-date -Format "dd/MM/yyyy - HH:mm:ss"
-        $body = @{
-            title = $IssueTitle
-            body = $html
-        } | ConvertTo-Json
-        Invoke-RestMethod -Method Post -Headers $headers -Body $body -ContentType "application/json" -Uri "https://api.github.com/repos/$repo/issues"
+
+
+        .\New-GHIssue.ps1 -Repository $Repo -Token $Token -Title $IssueTitle -Content $html

@@ -1,11 +1,9 @@
 ﻿param(
     [string]$Url
 )
-# Fetch RSS from URL
 
 $feed = Invoke-RestMethod -Uri $Url
 
-# Create a table with the wanted information
 $results = foreach ($item in $feed) {
     $title = $item.title
     $link = $item.link
@@ -21,5 +19,4 @@ $results = foreach ($item in $feed) {
     }
 }
 
-# return the result
 return $results
