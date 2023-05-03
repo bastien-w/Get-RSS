@@ -35,4 +35,4 @@ jobs:
             $html = $html -replace '&lt;', '<' -replace '&gt;', '>'
         }
 
-      .\New-GHIssue.ps1 -Repository $Repo -Token $Token -Title $IssueTitle -Content $html
+       .\New-GHIssue.ps1 -Repository $Repo -Token $Token -Title $IssueTitle -Content $html
