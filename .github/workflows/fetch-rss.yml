@@ -20,7 +20,7 @@ jobs:
 
         $linkProperty = @{
             Name = "Link"
-            Expression = {"`<a href=$($_.Link) target=_blank`>$_.Title`</a`>"}
+            Expression = {"`<a href=$($_.Link) target=_blank`>$($_.Title)`</a`>"}
         }
 
         foreach ($item in $csv) {
